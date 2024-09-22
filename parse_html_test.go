@@ -12,7 +12,7 @@ func TestParsedUrl(t *testing.T) {
 	var tests []testParse
 	one := testParse{name: "Path test", baseURL: "https://blog.boot.dev", input: "/salmon", expected: "https://blog.boot.dev/salmon"}
 
-	two := testParse{name: "full url test", baseURL: "https://blog.boot.dev", input: "https://not.boot.dev/salmon", expected: "https://not.boot.dev/salmonss"}
+	two := testParse{name: "full url test", baseURL: "https://blog.boot.dev", input: "https://not.boot.dev/salmon", expected: "https://not.boot.dev/salmon"}
 
 	tests = append(tests, one)
 	tests = append(tests, two)

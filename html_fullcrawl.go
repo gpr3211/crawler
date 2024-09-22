@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-	"time"
-	// "log"
 )
 
 func Exists(s string, p map[string]int) bool {
@@ -12,8 +10,7 @@ func Exists(s string, p map[string]int) bool {
 }
 
 // crawlPage recursively crawls an entire page coutning each instance of unique url
-func crawlPage(baseUrl, rawcurrURL string, pages map[string]int) {
-	time.Sleep(time.Millisecond * 50)
+func crawlPage(baseUrl, rawcurrURL string, pages map[string]int, htmlbody map[string]string) {
 
 	curr := newParsedURL(rawcurrURL)
 
@@ -39,6 +36,7 @@ func crawlPage(baseUrl, rawcurrURL string, pages map[string]int) {
 
 	body, err := getHTML(parsedUrlString(rawcurrURL, baseUrl))
 	if err != nil {
+		htmlbody[normalizedCurrent] = body
 		fmt.Println(err, normalizedCurrent)
 		return
 	}
@@ -46,7 +44,7 @@ func crawlPage(baseUrl, rawcurrURL string, pages map[string]int) {
 	NextURLS := getURLSfromHTML(body, baseUrl)
 
 	for _, next := range NextURLS {
-		crawlPage(baseUrl, next, pages)
+		crawlPage(baseUrl, next, pages, htmlbody)
 	}
 
 }
