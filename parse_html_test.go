@@ -6,11 +6,9 @@ import (
 )
 
 func TestParsedUrl(t *testing.T) {
-
 	type testParse struct {
 		name, baseURL, input, expected string
 	}
-
 	var tests []testParse
 	one := testParse{name: "Path test", baseURL: "https://blog.boot.dev", input: "/salmon", expected: "https://blog.boot.dev/salmon"}
 

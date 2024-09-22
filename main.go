@@ -24,6 +24,10 @@ func main() {
 		fmt.Println(err)
 	}
 	fmt.Println("Good Head", head)
+	b := getURLSfromHTML(head, inp)
+	for i, s := range b {
+		fmt.Printf("Index: %v\nLink: %v", i, s)
+	}
 
 	return
 

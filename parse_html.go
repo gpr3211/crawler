@@ -35,6 +35,15 @@ func newParsedURL(urlString string) ParsedURL {
 }
 
 // Takes htmlnode value and turns into a proper URL, depending if it is internal or external link
+//
+//	Example
+//	 s = "/path/one",
+//	 baseUrl="http://wagslane.dev"
+//	  >> "http://wagslane.dev/path/one"
+//		Example 2
+//			s = "https://not.boot.dev"
+//			baseUrl="http://wagslane.dev"
+//			>> "https://not.boot.dev"
 func parsedUrl(s, baseUrl string) string {
 
 	p := newParsedURL(s)
