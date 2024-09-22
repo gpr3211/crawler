@@ -1,8 +1,51 @@
 package main
 
 import (
+	"reflect"
 	"testing"
 )
+
+type HTMltest struct {
+	name      string
+	inputURL  string
+	inputBody string
+	expected  []string
+}
+
+func TestURLfromHTML(t *testing.T) {
+	tests := []HTMltest{}
+	test := HTMltest{
+		name:     "absolute/relative URLS",
+		inputURL: "https://blog.boot.dev",
+		inputBody: `
+<html>
+	<body>
+		<a href="/path/one">
+			<span>Boot.dev</span>
+		</a>
+		<a href="https://other.com/path/one">
+			<span>Boot.dev</span>
+		</a>
+	</body>
+</html>
+`,
+		expected: []string{"https://blog.boot.dev/path/one", "https://other.com/path/one"},
+	}
+	tests = append(tests, test)
+
+	for _, tc := range tests {
+
+		t.Run(tc.name, func(t *testing.T) {
+			actual := getURLSfromHTML(tc.inputBody, tc.inputURL)
+
+			ok := reflect.DeepEqual(actual, tc.expected)
+			if !ok {
+				t.Errorf("Test - %v FAIL \n Actual: %v\n Expected: %v", tc.name, actual, tc.expected)
+			}
+		})
+	}
+
+}
 
 func TestNormalizeURL(t *testing.T) {
 	tests := []struct {
@@ -31,50 +74,3 @@ func TestNormalizeURL(t *testing.T) {
 		})
 	}
 }
-
-/*
-func TestUrlsFromHTML(t *testing.T) {
-	tests := []struct {
-		name      string
-		inputURL  string
-		expected  string
-		inputBody string
-	}{
-		struct {
-			name      string
-			inputURL  string
-			expected  string
-			inputBody string
-		}{
-			name: "absolute and relative URLS",
-		},
-	}
-}
-
-type HTMltest struct {
-	name      string
-	inputURL  string
-	inputBody string
-	expected  []string
-}
-func TestURLfromHTML(t *testing.T) {
-	_ = HTMltest{
-		name:     "absolute/relative URLS",
-		inputURL: "https://blog.boot.dev",
-		inputBody: `
-<html>
-	<body>
-		<a href="/path/one">
-			<span>Boot.dev</span>
-		</a>
-		<a href="https://other.com/path/one">
-			<span>Boot.dev</span>
-		</a>
-	</body>
-</html>
-`,
-		expected: []string{"https://blog.boot.dev/path/one", "http://other.com/path/one"},
-	}
-
-}
-*/
