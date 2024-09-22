@@ -19,6 +19,12 @@ func main() {
 	inp := args[1]
 	fmt.Println("starting crawl: ", inp)
 
+	head, err := getHTML(inp)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println("Good Head", head)
+
 	return
 
 }
