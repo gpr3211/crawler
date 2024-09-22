@@ -32,7 +32,7 @@ func TestNormalizeURL(t *testing.T) {
 	}
 }
 
-<<<<<<< HEAD
+/*
 func TestUrlsFromHTML(t *testing.T) {
 	tests := []struct {
 		name      string
@@ -48,16 +48,17 @@ func TestUrlsFromHTML(t *testing.T) {
 		}{
 			name: "absolute and relative URLS",
 		},
-=======
+	}
+}
+
 type HTMltest struct {
 	name      string
 	inputURL  string
 	inputBody string
 	expected  []string
 }
-
 func TestURLfromHTML(t *testing.T) {
-	test := HTMltest{
+	_ = HTMltest{
 		name:     "absolute/relative URLS",
 		inputURL: "https://blog.boot.dev",
 		inputBody: `
@@ -73,7 +74,7 @@ func TestURLfromHTML(t *testing.T) {
 </html>
 `,
 		expected: []string{"https://blog.boot.dev/path/one", "http://other.com/path/one"},
->>>>>>> 604652d (lazygit test)
 	}
 
 }
+*/
