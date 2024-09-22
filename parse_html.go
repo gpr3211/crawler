@@ -13,6 +13,16 @@ type ParsedURL struct {
 	hash     string
 }
 
+func parsedUrlString(s, baseUrl string) string {
+
+	p := newParsedURL(s)
+	if p.hostname == "" {
+		return baseUrl + p.pathname
+	} else {
+		return p.protocol + "://" + p.hostname + p.pathname
+	}
+}
+
 // newParsedURL takes a string and returns a nicely formatted URL struct
 // to be used inside parseUrl
 func newParsedURL(urlString string) ParsedURL {
@@ -44,12 +54,3 @@ func newParsedURL(urlString string) ParsedURL {
 //			s = "https://not.boot.dev"
 //			baseUrl="http://wagslane.dev"
 //			>> "https://not.boot.dev"
-func parsedUrl(s, baseUrl string) string {
-
-	p := newParsedURL(s)
-	if p.hostname == "" {
-		return baseUrl + p.pathname
-	} else {
-		return p.protocol + "://" + p.hostname + p.pathname
-	}
-}

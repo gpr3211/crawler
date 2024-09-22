@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"golang.org/x/net/html"
 	"log"
 	"net/url"
@@ -29,8 +28,7 @@ func getURLSfromHTML(s, baseUrl string) []string {
 		if n.Type == html.ElementNode && n.Data == "a" {
 			for _, a := range n.Attr {
 				if a.Key == "href" {
-					fmt.Println(a.Val)
-					norm := parsedUrl(a.Val, baseUrl)
+					norm := parsedUrlString(a.Val, baseUrl)
 					out = append(out, norm)
 					break
 				}

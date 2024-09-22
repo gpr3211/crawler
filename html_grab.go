@@ -21,7 +21,7 @@ func getHTML(baseUrl string) (string, error) {
 	}
 
 	head := resp.Header.Get("Content-Type")
-	HeadCheck := strings.Contains(head, "text/html")
+	HeadCheck := strings.Contains(head, "text/html") || strings.Contains(head, "xml")
 
 	if !HeadCheck {
 		return "", errors.New(fmt.Sprintf("Bad Header (func getHTML) -- %v", head))
