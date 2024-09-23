@@ -28,7 +28,7 @@ func main() {
 	//conf := &cool.Coolfig{LogFileName: "app.log", LogDir: "/tmp/"}
 	conf := &cool.Coolfig{
 		LogFileName: "crawler.log",
-		LogDir:      ".",
+		LogDir:      os.TempDir(),
 	}
 	err := cool.Initialize(conf)
 	if err != nil {
@@ -48,6 +48,8 @@ func main() {
 	inp := args[1]
 
 	cool.Info("Starting crawl... target >> " + inp)
+	cool.Warn(" test Warning blah")
+	cool.Fatal(" Fatal error cool")
 
 	// tui element
 	s := spinner.New()
@@ -64,7 +66,7 @@ func main() {
 	mu := sync.Mutex{}
 	var cc chan struct{}
 
-	cfg := &Config{
+	_ = &Config{
 		pages:       pages,
 		bodies:      htmlmap,
 		baseURL:     &inp,
@@ -73,7 +75,7 @@ func main() {
 	}
 
 	// start recursive crawl of the entire base link
-	cfg.crawlPage(inp)
+	//	cfg.crawlPage(inp)
 
 	printMap(pages)
 	cool.Info("Printing report for " + inp)
