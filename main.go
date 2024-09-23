@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"log/slog"
 	"os"
+
 	"sync"
 
+	"github.com/gpr3211/crawler/internal/cool"
 	"github.com/gpr3211/crawler/spinner"
 	//"github.com/charmbracelet/lipgloss/list"
 )
@@ -23,10 +24,20 @@ type Config struct {
 var htmlmap = make(map[string]string)
 
 func main() {
-	slog.Info("Starting...")
+	//conf := &cool.Coolfig{LogFileName: "app.log", LogDir: "/tmp/"}
+	conf := &cool.Coolfig{}
+	err := cool.Initialize(conf)
+	if err != nil {
+		// handle error
+	}
+	cool.Info("Starting")
+	cool.Warn("test ")
+	cool.Fatal("Fatal")
+
 	args := os.Args
 	if len(args) < 2 && len(args) != 1 {
 		fmt.Println("no website provided")
+		cool.Println("FATAL: not enough args")
 		os.Exit(1)
 	} else if len(args) > 4 {
 		fmt.Println("too many arguments provided")
@@ -51,7 +62,7 @@ func main() {
 	mu := sync.Mutex{}
 	var cc chan struct{}
 
-	cfg := &Config{
+	_ = &Config{
 		pages:       pages,
 		bodies:      htmlmap,
 		baseURL:     &inp,
@@ -60,7 +71,7 @@ func main() {
 	}
 
 	// start recursive crawl of the entire base link
-	cfg.crawlPage(inp)
+	//	cfg.crawlPage(inp)
 
 	printMap(pages)
 
@@ -93,7 +104,7 @@ func printMap(m map[string]int) {
 		fmt.Println(l)
 		fmt.Printf("map size: %v\n", len(m))
 	*/
-	slog.Info("printing map")
+	cool.Info("Printing map")
 	for key, value := range m {
 
 		fmt.Printf("Found %d internal links to %s\n", value, key)
