@@ -1,16 +1,29 @@
 package main
 
 import (
-	"crawler/spinner"
 	"fmt"
+	"log/slog"
 	"os"
+	"sync"
+
+	"github.com/gpr3211/crawler/spinner"
 	//"github.com/charmbracelet/lipgloss/list"
 )
 
+type Config struct {
+	pages       map[string]int
+	bodies      map[string]string
+	baseURL     *string
+	mu          *sync.Mutex
+	concControl chan struct{}
+	wg          *sync.WaitGroup
+}
+
+// htmlmap contains the resp.bodies of the requests, unique
 var htmlmap = make(map[string]string)
 
 func main() {
-
+	slog.Info("Starting...")
 	args := os.Args
 	if len(args) < 2 && len(args) != 1 {
 		fmt.Println("no website provided")
@@ -23,8 +36,8 @@ func main() {
 	inp := args[1]
 	fmt.Println("starting crawl: ", inp)
 
+	// tui element
 	s := spinner.New()
-
 	s.Run()
 	/*
 		head, err := getHTML(inp)
@@ -32,10 +45,22 @@ func main() {
 			fmt.Println(err)
 		}
 	*/
+
 	// init page map
 	var pages = make(map[string]int)
+	mu := sync.Mutex{}
+	var cc chan struct{}
 
-	crawlPage(inp, inp, pages, htmlmap)
+	cfg := &Config{
+		pages:       pages,
+		bodies:      htmlmap,
+		baseURL:     &inp,
+		mu:          &mu,
+		concControl: cc,
+	}
+
+	// start recursive crawl of the entire base link
+	cfg.crawlPage(inp)
 
 	printMap(pages)
 
@@ -68,7 +93,9 @@ func printMap(m map[string]int) {
 		fmt.Println(l)
 		fmt.Printf("map size: %v\n", len(m))
 	*/
+	slog.Info("printing map")
 	for key, value := range m {
+
 		fmt.Printf("Found %d internal links to %s\n", value, key)
 	}
 }

@@ -33,7 +33,22 @@ type Spinner struct {
 
 type Type spinner.Spinner
 
+var ReverseMeter = spinner.Spinner{
+	Frames: []string{
+
+		"▰▰▰",
+		"▰▰▱",
+		"▰▱▱",
+		"▱▱▱",
+		"▰▱▱",
+		"▰▰▱",
+		"▰▰▰",
+	},
+	FPS: time.Second / 5,
+}
+
 var (
+	Reverse   = Type(ReverseMeter)
 	Line      = Type(spinner.Line)
 	Dots      = Type(spinner.Dot)
 	MiniDot   = Type(spinner.MiniDot)
@@ -47,6 +62,19 @@ var (
 	Hamburger = Type(spinner.Hamburger)
 	Ellipsis  = Type(spinner.Ellipsis)
 )
+
+/*
+var Meter = Spinner{
+	Frames: []string{
+		"▱▱▱",
+		"▰▱▱",
+		"▰▰▱",
+		"▰▱▱",
+		"▱▱▱",
+	},
+	FPS: time.Second / 7,
+}
+*/
 
 // Type sets the type of the spinner.
 func (s *Spinner) Type(t Type) *Spinner {
@@ -135,7 +163,8 @@ func (s *Spinner) View() string {
 	if s.title != "" {
 		title = s.titleStyle.Render(s.title) + " "
 	}
-	return s.spinner.View() + title
+	s.Type(Line)
+	return " " + s.spinner.View() + title + s.spinner.View()
 }
 
 // Run runs the spinner.

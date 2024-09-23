@@ -9,6 +9,7 @@ import (
 	"strings"
 )
 
+// getHTML takes a full url and grabs the entire response body, retured as a string
 func getHTML(baseUrl string) (string, error) {
 
 	resp, err := http.Get(baseUrl)
