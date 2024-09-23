@@ -50,5 +50,4 @@ func (cfg *Config) crawlPage(rawCurrentUrl string) {
 	for _, next := range NextURLS {
 		cfg.crawlPage(next)
 	}
-
 }

@@ -6,8 +6,9 @@ import (
 
 	"sync"
 
-	"github.com/gpr3211/crawler/internal/cool"
+	//	"github.com/gpr3211/crawler/internal/cool"
 	"github.com/gpr3211/crawler/spinner"
+	cool "github.com/gpr3211/log-cool"
 	//"github.com/charmbracelet/lipgloss/list"
 )
 
@@ -25,14 +26,14 @@ var htmlmap = make(map[string]string)
 
 func main() {
 	//conf := &cool.Coolfig{LogFileName: "app.log", LogDir: "/tmp/"}
-	conf := &cool.Coolfig{}
+	conf := &cool.Coolfig{
+		LogFileName: "crawler.log",
+		LogDir:      ".",
+	}
 	err := cool.Initialize(conf)
 	if err != nil {
 		// handle error
 	}
-	cool.Info("Starting")
-	cool.Warn("test ")
-	cool.Fatal("Fatal")
 
 	args := os.Args
 	if len(args) < 2 && len(args) != 1 {
@@ -45,7 +46,8 @@ func main() {
 	}
 
 	inp := args[1]
-	fmt.Println("starting crawl: ", inp)
+
+	cool.Info("Starting crawl... target >> " + inp)
 
 	// tui element
 	s := spinner.New()
@@ -62,7 +64,7 @@ func main() {
 	mu := sync.Mutex{}
 	var cc chan struct{}
 
-	_ = &Config{
+	cfg := &Config{
 		pages:       pages,
 		bodies:      htmlmap,
 		baseURL:     &inp,
@@ -71,11 +73,11 @@ func main() {
 	}
 
 	// start recursive crawl of the entire base link
-	//	cfg.crawlPage(inp)
+	cfg.crawlPage(inp)
 
 	printMap(pages)
+	cool.Info("Printing report for " + inp)
 
-	fmt.Println("REPORT for", inp)
 	return
 
 }
@@ -94,6 +96,7 @@ func printMap(m map[string]int) {
 	fmt.Println("Map contents:")
 	if len(m) == 0 {
 		fmt.Println("  (empty map)")
+		cool.Warn("Empty map")
 		return
 	}
 	/*	l := list.New()
@@ -106,7 +109,7 @@ func printMap(m map[string]int) {
 	*/
 	cool.Info("Printing map")
 	for key, value := range m {
-
 		fmt.Printf("Found %d internal links to %s\n", value, key)
 	}
+
 }

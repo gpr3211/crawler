@@ -6,6 +6,7 @@ require (
 	github.com/charmbracelet/bubbles v0.20.0
 	github.com/charmbracelet/bubbletea v1.1.1
 	github.com/charmbracelet/lipgloss v0.13.0
+	github.com/gpr3211/log-cool v0.5.0
 	github.com/muesli/termenv v0.15.2
 	golang.org/x/net v0.29.0
 )
