@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -17,11 +18,12 @@ func getHTML(baseUrl string) (string, error) {
 	}
 	ok := resp.StatusCode >= 200 && resp.StatusCode <= 299
 	if !ok {
-		return "", errors.New(fmt.Sprintf("Bad Response (func getHTML) -- %v", resp.Status))
+		log.Println(errors.New(fmt.Sprintf("Bad Response (func getHTML) -- %v", resp.Status)))
+		return "", nil
 	}
 
 	head := resp.Header.Get("Content-Type")
-	HeadCheck := strings.Contains(head, "text/html") || strings.Contains(head, "xml")
+	HeadCheck := strings.Contains(head, "text/html") || strings.Contains(head, "xml") || strings.Contains(head, "json")
 
 	if !HeadCheck {
 		return "", errors.New(fmt.Sprintf("Bad Header (func getHTML) -- %v", head))

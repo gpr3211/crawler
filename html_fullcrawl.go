@@ -31,18 +31,22 @@ func crawlPage(baseUrl, rawcurrURL string, pages map[string]int, htmlbody map[st
 		pages[normalizedCurrent]++
 		return
 	}
-
+	// create
 	pages[normalizedCurrent] = 1
 
+	// grab HTLM body from link
 	body, err := getHTML(parsedUrlString(rawcurrURL, baseUrl))
 	if err != nil {
-		htmlbody[normalizedCurrent] = body
 		fmt.Println(err, normalizedCurrent)
 		return
 	}
+	// save to map
+	htmlbody[normalizedCurrent] = body
 
+	// proceeds to grab links from current page
 	NextURLS := getURLSfromHTML(body, baseUrl)
 
+	//iterate through current page
 	for _, next := range NextURLS {
 		crawlPage(baseUrl, next, pages, htmlbody)
 	}

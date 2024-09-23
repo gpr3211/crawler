@@ -100,7 +100,7 @@ func New() *Spinner {
 	return &Spinner{
 		action:     func() { time.Sleep(time.Second) },
 		spinner:    s,
-		title:      "Loading...",
+		title:      "Crawling site...",
 		titleStyle: lipgloss.NewStyle().Foreground(lipgloss.AdaptiveColor{Light: "#00020A", Dark: "#FFFDF5"}),
 		output:     termenv.NewOutput(os.Stdout),
 		ctx:        nil,
@@ -114,6 +114,7 @@ func (s *Spinner) Init() tea.Cmd {
 
 // Update updates the spinner.
 func (s *Spinner) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	defer tea.Quit()
 	switch msg := msg.(type) {
 	case spinner.TickMsg:
 	case tea.KeyMsg:

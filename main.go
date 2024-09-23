@@ -4,8 +4,7 @@ import (
 	"crawler/spinner"
 	"fmt"
 	"os"
-
-	"github.com/charmbracelet/lipgloss/list"
+	//"github.com/charmbracelet/lipgloss/list"
 )
 
 var htmlmap = make(map[string]string)
@@ -25,6 +24,7 @@ func main() {
 	fmt.Println("starting crawl: ", inp)
 
 	s := spinner.New()
+
 	s.Run()
 	/*
 		head, err := getHTML(inp)
@@ -43,6 +43,14 @@ func main() {
 	return
 
 }
+
+func GetMapBody(m map[string]string, s string) string {
+	if m[s] == "" {
+		return ""
+	}
+	return m[s]
+
+}
 func printMap(m map[string]int) {
 	s := spinner.New()
 	s.Run()
@@ -52,17 +60,15 @@ func printMap(m map[string]int) {
 		fmt.Println("  (empty map)")
 		return
 	}
-	l := list.New()
+	/*	l := list.New()
 
-	for key, value := range m {
-		l.Items(key, value)
-	}
-	fmt.Println(l)
-	fmt.Printf("map size: %v\n", len(m))
-
-	/*
 		for key, value := range m {
-			fmt.Printf("  %s: %d\n", key, value)
+			l.Items(key, value)
 		}
+		fmt.Println(l)
+		fmt.Printf("map size: %v\n", len(m))
 	*/
+	for key, value := range m {
+		fmt.Printf("Found %d internal links to %s\n", value, key)
+	}
 }
