@@ -49,7 +49,6 @@ func main() {
 
 	cool.Info("Starting crawl... target >> " + inp)
 	cool.Warn(" test Warning blah")
-	cool.Fatal(" Fatal error cool")
 
 	// tui element
 	s := spinner.New()
@@ -66,7 +65,7 @@ func main() {
 	mu := sync.Mutex{}
 	var cc chan struct{}
 
-	_ = &Config{
+	cfg := &Config{
 		pages:       pages,
 		bodies:      htmlmap,
 		baseURL:     &inp,
@@ -75,10 +74,9 @@ func main() {
 	}
 
 	// start recursive crawl of the entire base link
-	//	cfg.crawlPage(inp)
+	cfg.crawlPage(inp)
 
 	printMap(pages)
-	cool.Info("Printing report for " + inp)
 
 	return
 

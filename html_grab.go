@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"log/slog"
 	"net/http"
 	"strings"
+	"time"
 )
 
 // getHTML takes a full url and grabs the entire response body, retured as a string
@@ -19,7 +21,7 @@ func getHTML(baseUrl string) (string, error) {
 	}
 	ok := resp.StatusCode >= 200 && resp.StatusCode <= 299
 	if !ok {
-		log.Println(errors.New(fmt.Sprintf("Bad Response (func getHTML) -- %v", resp.Status)))
+		log.Println(errors.New(fmt.Sprintf("Bad Response (func getHTML) -- %v", resp.StatusCode)))
 		return "", nil
 	}
 
@@ -34,6 +36,12 @@ func getHTML(baseUrl string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
+	slog.Info("finished", slog.Group("req",
+		slog.String("method", "Get"),
+		slog.String("url", resp.Request.URL.Hostname())),
+		slog.Int("status", resp.StatusCode),
+		slog.Duration("Duration", time.Millisecond))
 
 	return string(b), nil
 

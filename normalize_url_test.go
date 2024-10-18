@@ -73,4 +73,5 @@ func TestNormalizeURL(t *testing.T) {
 			}
 		})
 	}
+	return
 }
