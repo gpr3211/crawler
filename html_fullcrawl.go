@@ -12,6 +12,8 @@ func Exists(s string, p map[string]int) bool {
 // crawlPage recursively crawls an entire page coutning each instance of unique url
 // func crawlPage(baseUrl, rawcurrURL string, pages map[string]int, htmlbody map[string]string) {
 func (cfg *Config) crawlPage(rawCurrentUrl string) {
+
+	defer cfg.wg.Done()
 	curr := newParsedURL(rawCurrentUrl)
 
 	base := newParsedURL(*cfg.baseURL)
@@ -48,7 +50,10 @@ func (cfg *Config) crawlPage(rawCurrentUrl string) {
 
 	//iterate through current page
 	for _, next := range NextURLS {
+		cfg.wg.Add(1)
+
 		cfg.crawlPage(next)
+
 	}
 
 }

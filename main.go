@@ -26,6 +26,7 @@ var htmlmap = make(map[string]string)
 
 func main() {
 	//conf := &cool.Coolfig{LogFileName: "app.log", LogDir: "/tmp/"}
+
 	conf := &cool.Coolfig{
 		LogFileName: "crawler.log",
 		LogDir:      os.TempDir(),
@@ -61,7 +62,7 @@ func main() {
 	*/
 
 	// init page map
-	var pages = make(map[string]int)
+	pages := make(map[string]int)
 	mu := sync.Mutex{}
 	var cc chan struct{}
 
@@ -71,11 +72,14 @@ func main() {
 		baseURL:     &inp,
 		mu:          &mu,
 		concControl: cc,
+		wg:          &sync.WaitGroup{},
 	}
+	cfg.wg.Add(1)
 
 	// start recursive crawl of the entire base link
-	cfg.crawlPage(inp)
+	go cfg.crawlPage(inp)
 
+	cfg.wg.Wait()
 	printMap(pages)
 
 	return
